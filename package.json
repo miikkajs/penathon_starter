@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "./node_modules/.bin/node-dev app.js",
     "start": "node app.js",
-    "test": "npm test"
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha tests/**/*test.js"
   },
   "author": "Miikka Salomaa",
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.15.x",
+    "chai": "3.5.x",
     "express": "4.13.x",
-    "node-dev": "3.1.x"
+    "mocha": "2.5.x",
+    "node-dev": "3.1.x",
+    "sequelize": "3.23.x",
+    "sequelize-cli": "2.4.x",
+    "sinon": "1.17.x",
+    "sqlite3": "3.1.x"
   }
 }

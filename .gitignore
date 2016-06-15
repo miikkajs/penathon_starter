@@ -1,3 +1,6 @@
 .idea/
 npm-debug.log
 node_modules
+
+db.development.sqlite
+db.test.sqlite
