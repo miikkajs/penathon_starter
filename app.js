@@ -1,7 +1,10 @@
 const express = require('express');
 const path = require('path');
+const glob = require( 'glob' );
 const bodyParser = require('body-parser');
 var models = require('./models');
+
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -23,9 +26,17 @@ models.sequelize.sync().then(() => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const v1Routes = require('./api/v1/user/routes');
 
-app.use('/api/v1', v1Routes);
+const loadRoutes = () => {
+  const v1Routes = './api/v1/**/routes.js';
+
+  glob.sync(v1Routes).forEach((file) => {
+    let route = require(path.resolve(file));
+    app.use('/api/v1', route);
+  });
+};
+
+loadRoutes();
 
 app.use((err, req, res, next) => {
   return res.status(500).send(err.toString());
