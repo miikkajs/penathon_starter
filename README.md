@@ -38,6 +38,13 @@
     Configure your database connection in `config/config.json`. 
     Default DB is sqlite for development. 
     
+* [Passport Facebook](https://github.com/jaredhanson/passport-facebook)
+    
+    Passport Facebook login.
+    Get your credentials from [Facebook developer console](https://developers.facebook.com/)
+    Give `FACEBOOK_ID` and `FACEBOOK_SECRET` as env variables to `npm start`
+    `FACEBOOK_ID={id} FACEBOOK_SECRET={secret} npm start`
+    
 ## How to run?
 `npm install && npm start`
 
