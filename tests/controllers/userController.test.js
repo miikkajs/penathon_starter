@@ -5,21 +5,31 @@ require('../initdb');
 
 describe('User controller test', () => {
 
-  it('Should find user', (done) => {
-    const username = 'Unit';
-    userController.findUsers({username: username})
+  it('Should find users', (done) => {
+    const name = {
+      firstName: 'Unit',
+      lastName: 'Test'
+    };
+    
+    userController.findUsers(name)
       .then(user => {
-        expect(user[0].username).to.equal(username);
+        expect(user[0].firstName).to.equal(name.firstName);
+        expect(user[0].lastName).to.equal(name.lastName);
         done()
       })
       .catch(done);
   });
 
   it('Should create user', (done) => {
-    const username = 'Test name';
-    userController.createUser(username)
+    const name = {
+      firstName: 'Test',
+      lastName: 'Name'
+    };
+    
+    userController.createUser(name)
       .then((user) => {
-        expect(user.username).to.equal(username);
+        expect(user.firstName).to.equal(name.firstName);
+        expect(user.lastName).to.equal(name.lastName);
         done();
       })
       .catch(done);

@@ -1,12 +1,16 @@
 const models = require('../../../models');
 
-const findUsers = (query) =>
+const findUsers = query =>
   models.User.findAll({where: query});
 
-const createUser = (username) =>
-  models.User.create({username: username});
+const findUser = query =>
+  models.User.find({where: query});
+
+const createUser = params =>
+  models.User.create(params);
 
 module.exports = {
+  findUser: findUser,
   findUsers: findUsers,
   createUser: createUser
 };
