@@ -3,19 +3,32 @@ const path = require('path');
 const glob = require('glob');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const expressSession = require('express-session');
-
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const passportConfig = require('./config/passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const userController = require('./api/v1/user/userController');
+
 const passport = require('passport');
 
 var models = require('./models');
-const userController = require('./api/v1/user/userController');
-
 
 const app = express();
 
+const store =  new SequelizeStore({
+  db: models.sequelize
+});
+
 app.use(cookieParser());
-app.use(expressSession({ secret: 'p3n47h0n' }));
+app.use(session({
+  secret: 'p3n47h0n',
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}));
+
+store.sync();
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -50,21 +63,15 @@ const loadRoutes = () => {
 
 loadRoutes();
 
-app.use((err, req, res, next) => {
-  return res.status(500).send(err.toString());
-});
-
-
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  userController.findUser({
+  return userController.findUser({
       id: id
     })
-    .then(user => done(null, user))
+    .then(user => done(null, user.dataValues))
     .catch(done);
 });
 
@@ -96,7 +103,26 @@ app.get('/login/facebook',
 
 app.get('/login/facebook/return',
   passport.authenticate('facebook', {failureRedirect: '/'}),
-  (req, res) => res.redirect('/welcome.html'));
+  (req, res) => {
+    return req.session.save(() => {
+      return res.redirect('/app')
+    });
+  });
+
+
+app.use((err, req, res, next) => {
+  return res.status(500).send(err.toString());
+});
+
+app.get('/logout',(req, res) => {
+  req.session.destroy();
+  return res.status(200).send();
+});
+
+app.get('/app', passportConfig.isAuthenticated, (req, res) => {
+  return res.redirect('/welcome.html');
+});
+
 
 
 module.exports = app;

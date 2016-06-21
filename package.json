@@ -16,20 +16,21 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.15.x",
+    "connect-session-sequelize": "3.0.x",
     "cookie-parser": "^1.4.3",
     "express": "4.13.x",
     "express-session": "^1.13.0",
     "glob": "7.0.x",
-    "node-dev": "3.1.x",
     "passport": "0.3.x",
     "passport-facebook": "2.1.x",
     "sequelize": "3.23.x",
-    "sequelize-cli": "2.4.x",
-    "sqlite3": "3.1.x"
+    "sequelize-cli": "2.4.x"
   },
   "devDependencies": {
     "chai": "3.5.x",
     "mocha": "2.5.x",
-    "sinon": "1.17.x"
+    "sinon": "1.17.x",
+    "sqlite3": "3.1.x",
+    "node-dev": "3.1.x"
   }
 }
