@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const passportConfig = require('./config/passport');
-const FacebookStrategy = require('passport-facebook').Strategy;
 const userController = require('./api/v1/user/userController');
 
 const passport = require('passport');
@@ -75,42 +74,10 @@ passport.deserializeUser((id, done) => {
     .catch(done);
 });
 
-passport.use(new FacebookStrategy({
-  clientID: process.env.FACEBOOK_ID,
-  clientSecret: process.env.FACEBOOK_SECRET,
-  callbackURL: '/login/facebook/return',
-  profileFields: ['name', 'email'],
-  passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
-  return userController.findUser({
-    facebookId: profile._json.id
-  }).then(user => {
-    if (user) {
-      return Promise.resolve(user);
-    } else {
-      return userController.createUser({
-        firstName: profile._json.first_name,
-        lastName: profile._json.last_name,
-        facebookId: profile._json.id
-      })
-    }
-  }).then((user) => done(null, user.dataValues))
-    .catch(done);
-}));
-
-app.get('/login/facebook',
-  passport.authenticate('facebook'));
-
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', {failureRedirect: '/'}),
-  (req, res) => {
-    return req.session.save(() => {
-      return res.redirect('/app')
-    });
-  });
+passportConfig.initFacebookStrategy(app);
 
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   return res.status(500).send(err.toString());
 });
 
