@@ -77,7 +77,7 @@ passport.deserializeUser((id, done) => {
 passportConfig.initFacebookStrategy(app);
 
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   return res.status(500).send(err.toString());
 });
 
