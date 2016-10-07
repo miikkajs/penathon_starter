@@ -74,7 +74,23 @@ passport.deserializeUser((id, done) => {
     .catch(done);
 });
 
-passportConfig.initFacebookStrategy(app);
+
+
+function checkFacebookCredentials(){
+  return !!process.env.FACEBOOK_ID && !!process.env.FACEBOOK_SECRET
+}
+
+function isAnyCredentialAvailable(){
+  return checkFacebookCredentials();
+}
+
+if(!isAnyCredentialAvailable()){
+  throw new Error('You can\'t init passport without any credentials!');
+}
+
+if(checkFacebookCredentials()){
+  passportConfig.initFacebookStrategy(app);
+}
 
 
 app.use((err, req, res, next) => {
