@@ -75,9 +75,7 @@ passport.deserializeUser((id, done) => {
 });
 
 
-if (!isAnyCredentialAvailable()) {
-  throw new Error('You can\'t init passport without any credentials!');
-}
+passportConfig.initLocalStrategy(app);
 
 if (checkFacebookCredentials()) {
   passportConfig.initFacebookStrategy(app);
@@ -94,7 +92,7 @@ app.use((err, req, res, next) => {
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  return res.status(200).send();
+  return res.redirect('/');
 });
 
 app.get('/app', passportConfig.isAuthenticated, (req, res) => {
@@ -110,8 +108,4 @@ function checkFacebookCredentials() {
 
 function checkGoogleCredentials() {
   return !!process.env.GOOGLE_CLIENT_ID && !!process.env.GOOGLE_CLIENT_SECRET;
-}
-
-function isAnyCredentialAvailable() {
-  return checkFacebookCredentials() || checkGoogleCredentials();
 }

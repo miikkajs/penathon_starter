@@ -1,6 +1,7 @@
 const userController = require('../api/v1/user/userController');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const LocalStrategy = require('passport-local');
 const passport = require('passport');
 
 const isAuthenticated = (req, res, next) =>
@@ -80,9 +81,38 @@ const initGoogleStrategy = (app, clientId = process.env.GOOGLE_CLIENT_ID, client
     });
 };
 
+const initLocalStrategy = (app) => {
+  passport.use(new LocalStrategy({
+      usernameField: 'email'
+    },
+    function (email, password, done) {
+      userController.findUser({email: email})
+        .then((user) => {
+          if (!user) {
+            return done(null, false);
+          }
+          if (!user.validPassword(password)) {
+            return done(null, false);
+          }
+          return done(null, user);
+        }).catch(done);
+    }
+  ));
+
+  app.post('/login/local', passport.authenticate('local', {
+    failureRedirect: '/'
+  }), (req, res) => {
+    return req.session.save(() => {
+      return res.redirect('/app')
+    });
+  });
+
+};
+
 module.exports = {
   isAuthenticated: isAuthenticated,
   initFacebookStrategy: initFacebookStrategy,
-  initGoogleStrategy: initGoogleStrategy
+  initGoogleStrategy: initGoogleStrategy,
+  initLocalStrategy: initLocalStrategy
 };
 
