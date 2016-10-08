@@ -45,6 +45,13 @@
     Give `FACEBOOK_ID` and `FACEBOOK_SECRET` as env variables to `npm start`
     `FACEBOOK_ID={id} FACEBOOK_SECRET={secret} npm start`
     
+* [Passport Google](https://github.com/jaredhanson/passport-google-oauth2)
+    
+    Passport Google login.
+    Get your credentials from [Google developer console](https://console.developers.google.com/)
+    Give `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` as env variables to `npm start`
+    `GOOGLE_CLIENT_ID={id} GOOGLE_CLIENT_SECRET={secret} npm start`
+    
 ## How to run?
 `npm install && npm start`
 

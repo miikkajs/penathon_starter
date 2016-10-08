@@ -11,12 +11,15 @@ module.exports = function(sequelize, DataTypes) {
     },
     facebookId: {
       type: DataTypes.BIGINT
+    },
+    googleId: {
+      type: DataTypes.BIGINT
     }
   }, {
     indexes: [
       {
         unique: true,
-        fields: ['facebookId']
+        fields: ['facebookId', 'googleId']
       }
     ],
     classMethods: {

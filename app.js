@@ -14,7 +14,7 @@ var models = require('./models');
 
 const app = express();
 
-const store =  new SequelizeStore({
+const store = new SequelizeStore({
   db: models.sequelize
 });
 
@@ -68,28 +68,23 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   return userController.findUser({
-      id: id
-    })
+    id: id
+  })
     .then(user => done(null, user.dataValues))
     .catch(done);
 });
 
 
-
-function checkFacebookCredentials(){
-  return !!process.env.FACEBOOK_ID && !!process.env.FACEBOOK_SECRET
-}
-
-function isAnyCredentialAvailable(){
-  return checkFacebookCredentials();
-}
-
-if(!isAnyCredentialAvailable()){
+if (!isAnyCredentialAvailable()) {
   throw new Error('You can\'t init passport without any credentials!');
 }
 
-if(checkFacebookCredentials()){
+if (checkFacebookCredentials()) {
   passportConfig.initFacebookStrategy(app);
+}
+
+if (checkGoogleCredentials()) {
+  passportConfig.initGoogleStrategy(app);
 }
 
 
@@ -97,7 +92,7 @@ app.use((err, req, res, next) => {
   return res.status(500).send(err.toString());
 });
 
-app.get('/logout',(req, res) => {
+app.get('/logout', (req, res) => {
   req.session.destroy();
   return res.status(200).send();
 });
@@ -107,5 +102,16 @@ app.get('/app', passportConfig.isAuthenticated, (req, res) => {
 });
 
 
-
 module.exports = app;
+
+function checkFacebookCredentials() {
+  return !!process.env.FACEBOOK_ID && !!process.env.FACEBOOK_SECRET
+}
+
+function checkGoogleCredentials() {
+  return !!process.env.GOOGLE_CLIENT_ID && !!process.env.GOOGLE_CLIENT_SECRET;
+}
+
+function isAnyCredentialAvailable() {
+  return checkFacebookCredentials() || checkGoogleCredentials();
+}

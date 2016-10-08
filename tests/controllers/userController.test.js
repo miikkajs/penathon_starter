@@ -23,13 +23,17 @@ describe('User controller test', () => {
   it('Should create user', (done) => {
     const name = {
       firstName: 'Test',
-      lastName: 'Name'
+      lastName: 'Name',
+      facebookId: 1,
+      googleId: 2
     };
     
     userController.createUser(name)
       .then((user) => {
         expect(user.firstName).to.equal(name.firstName);
         expect(user.lastName).to.equal(name.lastName);
+        expect(user.facebookId).to.equal(1);
+        expect(user.googleId).to.equal(2);
         done();
       })
       .catch(done);
