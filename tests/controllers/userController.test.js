@@ -5,6 +5,22 @@ require('../initdb');
 
 describe('User controller test', () => {
 
+  it('Should find a user', (done) => {
+    const name = {
+      firstName: 'Unit',
+      lastName: 'Test'
+    };
+
+    userController.findUser(name)
+      .then(user => {
+        expect(user.firstName).to.equal(name.firstName);
+        expect(user.lastName).to.equal(name.lastName);
+        done()
+      })
+      .catch(done);
+  });
+
+
   it('Should find users', (done) => {
     const name = {
       firstName: 'Unit',
