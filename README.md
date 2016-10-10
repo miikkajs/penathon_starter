@@ -6,25 +6,27 @@
 * /
     * Run app.js with `npm start` to start your server.
 * /api/{version}/{name}
-    * Controllers and routes for model
+    * Controllers and routes for model.
     * route.js files are required automatically to app routes.
 * /config
-    * Database config
+    * Database config.
 * /migrations
-    * Database migrations
+    * Database migrations.
     * Run `node_modules/.bin/sequelize help` for more details.
 * /models
     * Models for sequelize.
     * Run `node_modules/.bin/sequelize help:model:create`  for more details.
 * /seeder
-    * Seeders
+    * Seeders.
     * Run `node_modules/.bin/sequelize help:db:seed`  for more details.
 * /public
     * Public static files.
 * /tests
-    * require initdb.js in tests to initialize your db before test and drop after. 
+    * To initialize db: require initdb.js and run init and drop in your before/after each tests.
     * /controllers
-        * Tests for controllers
+        * Tests for controllers.
+    * /routes
+        * Tests for routes.
         
     
     
