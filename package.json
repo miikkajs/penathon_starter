@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/node-dev app.js",
     "start": "node app.js",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha tests/**/*test.js"
+    "test": " PORT=8888 NODE_ENV=test ./node_modules/.bin/mocha tests/**/*test.js"
   },
   "engines": {
     "node": ">=6.2.0",
@@ -33,9 +33,10 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "mocha": "^2.5.0",
+    "node-dev": "^3.1.0",
     "sinon": "^1.17.0",
-    "sqlite3": "^3.1.0",
-    "node-dev": "^3.1.0"
+    "sqlite3": "^3.1.0"
   }
 }

@@ -8,7 +8,7 @@ router.get('/user', passportConfig.isAuthenticated, Promise.coroutine(function*(
     const user = yield userController.findUser({id: req.user.id});
     return res.json(user.toJSON());
   } catch (err) {
-    next(error);
+    next(err);
   }
 }));
 

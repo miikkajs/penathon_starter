@@ -41,7 +41,9 @@ app.use(express.static(path.join(__dirname, 'public'), {maxAge: 31557600000}));
 
 app.set('port', process.env.PORT || 3000);
 
-models.sequelize.sync().then(() => {
+const force = process.env.NODE_ENV === 'test';
+
+models.sequelize.sync({force}).then(() => {
   app.listen(app.get('port'), () => {
     console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
   });

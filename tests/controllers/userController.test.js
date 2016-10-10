@@ -1,15 +1,14 @@
 const chai = require('chai');
 const expect = chai.expect;
 const userController = require('../../api/v1/user/userController');
-require('../initdb');
+const dbHelpers = require('../dbHelpers.js');
 
 describe('User controller test', () => {
 
+  beforeEach(done => dbHelpers.init(done));
+  afterEach(done => dbHelpers.drop(done));
+
   it('Should find a user', (done) => {
-    const mockUser = {
-      firstName: 'Unit',
-      lastName: 'Test'
-    };
 
     userController.findUser(mockUser)
       .then(user => {
@@ -22,10 +21,6 @@ describe('User controller test', () => {
 
 
   it('Should find users', (done) => {
-    const mockUser = {
-      firstName: 'Unit',
-      lastName: 'Test'
-    };
 
     userController.findUsers(mockUser)
       .then(user => {
@@ -38,9 +33,9 @@ describe('User controller test', () => {
 
   it('Should create user', (done) => {
     const mockUser = {
-      firstName: 'Test',
-      lastName: 'Name',
-      email: 'Test email',
+      firstName: 'Test 2',
+      lastName: 'Name2',
+      email: 'test2@test.com',
       password: 'Test password',
       facebookId: 1,
       googleId: 2
